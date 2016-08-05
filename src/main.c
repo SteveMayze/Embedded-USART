@@ -1,47 +1,39 @@
-//
-// This file is part of the GNU ARM Eclipse distribution.
-// Copyright (c) 2014 Liviu Ionescu.
-//
+/////////////////////////////////////////////////////////////////////////
+///	\file main.c
+///	\brief This is the main program code.
+///
+///	Author: Ronald Sousa (Opticalworm)
+/////////////////////////////////////////////////////////////////////////
+#include "common.h"
+#include "MCU/led.h"
+#include "MCU/usart2.h"
+#include "MCU/tick.h"
 
-// ----------------------------------------------------------------------------
-
-#include <stdio.h>
-#include <stdlib.h>
-#include "diag/Trace.h"
-
-// ----------------------------------------------------------------------------
-//
-// Standalone STM32F0 empty sample (trace via $(trace)).
-//
-// Trace support is enabled by adding the TRACE macro definition.
-// By default the trace messages are forwarded to the $(trace) output,
-// but can be rerouted to any device or completely suppressed, by
-// changing the definitions required in system/src/diag/trace_impl.c
-// (currently OS_USE_TRACE_ITM, OS_USE_TRACE_SEMIHOSTING_DEBUG/_STDOUT).
-//
-
-// ----- main() ---------------------------------------------------------------
-
-// Sample pragmas to cope with warnings. Please note the related line at
-// the end of this function, used to pop the compiler diagnostics status.
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wmissing-declarations"
-#pragma GCC diagnostic ignored "-Wreturn-type"
-
-int
-main(int argc, char* argv[])
+/////////////////////////////////////////////////////////////////////////
+///	\brief the first user code function to be called after the ARM M0
+///	has initial.
+/////////////////////////////////////////////////////////////////////////
+void main(void)
 {
-  // At this stage the system clock should have already been configured
-  // at high speed.
+    uint8_t TempData;
 
-  // Infinite loop
-  while (1)
+    Led_Init();
+    Tick_init();
+
+    SerialPort2.Open(9600);
+
+    SerialPort2.SendByte(0x0C); // clear terminal
+
+    SerialPort2.SendString((int8_t *)"Hello Brave New World\r\n");
+
+    for ( ;; )
     {
-       // Add your code here.
+        if(SerialPort2.GetByte(&TempData))
+        {
+        	SerialPort2.SendByte(TempData);
+        	if( 'A' == TempData){
+        		Led_Toggle();
+        	}
+        }
     }
 }
-
-#pragma GCC diagnostic pop
-
-// ----------------------------------------------------------------------------
