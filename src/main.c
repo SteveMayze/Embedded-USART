@@ -28,9 +28,10 @@ void main(void)
         if(SerialPort2.GetByte(&tempData))
         {
         	SerialPort2.SendByte(tempData);
-        	for(delayCount = 100; delayCount; delayCount--) {
-        		Led_Toggle();
-        	}
+
+        	// Application simulation
+        	for(delayCount = 1000; delayCount; delayCount--);
+    		Led_Toggle(); // Toggle each byte
         }
     }
 }

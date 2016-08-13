@@ -7,6 +7,16 @@
 /////////////////////////////////////////////////////////////////////////
 #include "MCU/usart2.h"
 
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Alternative function set bit 1 for AFR2
+///////////////////////////////////////////////////////////////////////////////
+#define GPIO_AFRL_AFR2_0 (uint32_t) 0x00000100
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Alternative function set bit 1 for AFR3
+///////////////////////////////////////////////////////////////////////////////
+#define GPIO_AFRL_AFR3_0 (uint32_t) 0x00001000
+
 /////////////////////////////////////////////////////////////////////////
 /// \brief enable 16x oversampling. Used to reduce the baudrate calculation
 /// error.
@@ -35,7 +45,7 @@ static uint_fast8_t IsSerialOpen(void)
 ///////////////////////////////////////////////////////////////////////////////
 static void Close(void)
 {
-	USART2->CR1 &= ~(1);
+	USART2->CR1 &= ~(USART_CR1_UE);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -46,7 +56,7 @@ static void Close(void)
 ///	\note setting baudrate will effect any data currently been sent.susb
 ///		make sure that you check that the write buffer is empty
 /////////////////////////////////////////////////////////////////////////
-static void Setbaudrate(uint32_t baud)
+static void Setbaudrate(const uint32_t baud)
 {
 	uint_fast8_t WasUartEnable = FALSE;
 
@@ -62,16 +72,14 @@ static void Setbaudrate(uint32_t baud)
 	BaudrateTemp = (SystemCoreClock) / (baud);
 #else
 	BaudrateTemp = (2 * SystemCoreClock) / (baud);
-
 	BaudrateTemp = ((BaudrateTemp & 0xFFFFFFF0) | ((BaudrateTemp >> 1) & 0x00000007));
 #endif
 
 	USART2->BRR = BaudrateTemp;
 
-
 	if(WasUartEnable)
 	{
-		USART2->CR1 |=  1;
+		USART2->CR1 |=  USART_CR1_UE;
 	}
 
 }
@@ -80,12 +88,11 @@ static void Setbaudrate(uint32_t baud)
 ///	\brief	you can use this function to check if the write buffer is
 ///	empty and ready for new data
 ///
-///	\param destination pointer to return the read byte
 ///	\return TRUE = Busy else ready. else false
 /////////////////////////////////////////////////////////////////////////
 static uint_fast8_t IsWriteBusy(void)
 {
-	if ( USART2->ISR & (1<<7) )
+	if ( USART2->ISR & USART_ISR_TXE )
 	{
 		return FALSE;
 	}
@@ -100,34 +107,34 @@ static uint_fast8_t IsWriteBusy(void)
 ///
 /// \return true = success else port is already open
 ///////////////////////////////////////////////////////////////////////////////
-static uint_fast8_t Open(uint32_t baudrate)
+static uint_fast8_t Open(const uint32_t baudrate)
 {
 
 	if(!IsOpenFlag)
 	{
-		RCC->APB1ENR |= (1<<17); // en USART clock
+		RCC->APB1ENR |= RCC_APB1ENR_USART2EN; // en USART clock
 
-		USART2->CR1 = 0;
+		USART2->CR1 = 0; // Reset the USART CR1 register
 
-		RCC->AHBENR |= (1<<17); // en GPIOA clock
+		RCC->AHBENR |= RCC_AHBENR_GPIOAEN; // en GPIOA clock
 
-		GPIOA->MODER &= (~(3<<4) | ~(3<<6)); // clear PA2 moder
-		GPIOA->MODER  |= (2<<4) | (2<<6); // Set PA2 to alter function
+		GPIOA->MODER &= (~(GPIO_MODER_MODER2) | ~(GPIO_MODER_MODER3)); // clear PA2 moder
+		GPIOA->MODER  |= GPIO_MODER_MODER2_1 | GPIO_MODER_MODER3_1; // Set PA2 to alter function
 
-		GPIOA->AFR[0] &= (~(0xF << 8) | ~(0xF << 12)); // clear PA2 config
-		GPIOA->AFR[0] |= (1<<8) | (1<<12);
+		GPIOA->AFR[0] &= (~(GPIO_AFRL_AFR2) | ~(GPIO_AFRL_AFR3)); // clear PA2 config
+		GPIOA->AFR[0] |= GPIO_AFRL_AFR2_0 | GPIO_AFRL_AFR3_0;
 
 		// set baudrate
 		Setbaudrate(baudrate);
 
 
-		USART2->CR1 |= (1<<15) | 1 | (1<<3) | (1<<2);
+		USART2->CR1 |= USART_CR1_OVER8 | USART_CR1_UE | USART_CR1_TE | USART_CR1_RE;
 
 		IsOpenFlag = TRUE;
 	}
 
 	// set baudrate
-	Setbaudrate(baudrate);
+	// Setbaudrate(baudrate);
     return FALSE;
 }
 
@@ -136,9 +143,11 @@ static uint_fast8_t Open(uint32_t baudrate)
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Send a single byte
 ///
+///	\param Source the character to send via serial.
+///
 /// \return true = success else port is not open
 ///////////////////////////////////////////////////////////////////////////////
-static uint_fast8_t SendByte(uint8_t source)
+static uint_fast8_t SendByte(const uint8_t source)
 {
 	if(IsOpenFlag)
 	{
@@ -162,7 +171,7 @@ static int_fast8_t DoesReceiveBufferHaveData(void)
 {
 	if(IsOpenFlag)
 	{
-		if(USART2->ISR & (1<<5))
+		if( USART2->ISR & USART_ISR_RXNE )
 		{
 			return TRUE;
 		}
@@ -198,20 +207,31 @@ static int_fast8_t GetByte(uint8_t *destination)
 
 	if(Result)
 	{
-
-		if (USART2->ISR & (1<<3))
-		{
-			USART2->ICR |= (1<<3);
-			Result = -1;
-		}
-
-		if (USART2->ISR & (1<<1))
-		{
-			USART2->ICR |= (1<<1);
-			Result = -1;
-		}
-
 		*destination = USART2->RDR;
+	}
+
+	if (USART2->ISR & USART_ISR_ORE)
+	{
+		USART2->ICR |= USART_ICR_ORECF;
+		Result = -1;
+	}
+
+	if (USART2->ISR & USART_ISR_FE)
+	{
+		USART2->ICR |= USART_ICR_FECF;
+		Result = -1;
+	}
+
+	if (USART2->ISR & USART_ISR_NE)
+	{
+		USART2->ICR |= USART_ICR_NCF;
+		Result = -1;
+	}
+
+	if (USART2->ISR & USART_ISR_PE)
+	{
+		USART2->ICR |= USART_ICR_PECF;
+		Result = -1;
 	}
 
     return Result;
