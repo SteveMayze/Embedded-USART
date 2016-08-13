@@ -15,23 +15,20 @@
 /////////////////////////////////////////////////////////////////////////
 void main(void)
 {
-    uint8_t TempData;
+    uint8_t tempData;
+    uint32_t delayCount = 0;
 
     Led_Init();
     Tick_init();
 
-    SerialPort2.Open(9600);
-
-    SerialPort2.SendByte(0x0C); // clear terminal
-
-    SerialPort2.SendString((int8_t *)"Hello Brave New World\r\n");
+    SerialPort2.Open(115200);
 
     for ( ;; )
     {
-        if(SerialPort2.GetByte(&TempData))
+        if(SerialPort2.GetByte(&tempData))
         {
-        	SerialPort2.SendByte(TempData);
-        	if( 'A' == TempData){
+        	SerialPort2.SendByte(tempData);
+        	for(delayCount = 100; delayCount; delayCount--) {
         		Led_Toggle();
         	}
         }

@@ -1,133 +1,245 @@
-#include <MCU/usart2.h>
-#include "cmsis_device.h"
-#include "common.h"
+/////////////////////////////////////////////////////////////////////////
+///	\file usart2.c
+///	\brief STM32 serial2 MCU hardware interface layer. to maintain
+///	code portability, the hardware related code is split from the main logic.
+///
+///	Author: Ronald Sousa (Opticalworm)
+/////////////////////////////////////////////////////////////////////////
+#include "MCU/usart2.h"
 
-// #define USART_OVER_SAMPLE_16
+/////////////////////////////////////////////////////////////////////////
+/// \brief enable 16x oversampling. Used to reduce the baudrate calculation
+/// error.
+/////////////////////////////////////////////////////////////////////////
+//#define USART_OVER_SAMPLE_16
 
-uint_fast8_t isOpenFlag = FALSE;
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Keeps track if the serial port is configure and opend
+///////////////////////////////////////////////////////////////////////////////
+static uint_fast8_t IsOpenFlag = FALSE;
 
-uint_fast8_t isSerialOpen(void) {
-	return isOpenFlag;
+///////////////////////////////////////////////////////////////////////////////
+/// \brief return the serial open state
+///
+/// \return true = the serial port is open else false
+///////////////////////////////////////////////////////////////////////////////
+static uint_fast8_t IsSerialOpen(void)
+{
+    return IsOpenFlag;
 }
 
-static void close(void) {
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Open the serial port
+///
+/// \return true = success else port is already open
+///////////////////////////////////////////////////////////////////////////////
+static void Close(void)
+{
 	USART2->CR1 &= ~(1);
 }
 
+/////////////////////////////////////////////////////////////////////////
+///	\brief	Set usart baudrate. can be called at any time.
+///
+///	\param baud the desire baudrate
+///
+///	\note setting baudrate will effect any data currently been sent.susb
+///		make sure that you check that the write buffer is empty
+/////////////////////////////////////////////////////////////////////////
+static void Setbaudrate(uint32_t baud)
+{
+	uint_fast8_t WasUartEnable = FALSE;
 
-static void setBaudRate(uint32_t baud) {
+	uint16_t BaudrateTemp = 0;
 
-	uint_fast8_t wasUARTEnabled = FALSE;
-	uint16_t baudRateTemp = 0;
-
-	if(isOpenFlag){
-		wasUARTEnabled = TRUE;
-		close();
+	if (IsOpenFlag)
+	{
+		WasUartEnable = TRUE;
+		Close();
 	}
 
 #ifdef USART_OVER_SAMPLE_16
-
-	baudRateTemp = (SystemCoreClock) / (baud);
-
+	BaudrateTemp = (SystemCoreClock) / (baud);
 #else
+	BaudrateTemp = (2 * SystemCoreClock) / (baud);
 
-	// Section 23.4.4 of the Reference Manual
-	baudRateTemp = (2 * SystemCoreClock) / (baud);
-	baudRateTemp = ((baudRateTemp & 0xFFFFFFF0) | ((baudRateTemp >> 1 ) & 0x00000007));
-
+	BaudrateTemp = ((BaudrateTemp & 0xFFFFFFF0) | ((BaudrateTemp >> 1) & 0x00000007));
 #endif
 
-	USART2->BRR = baudRateTemp;
-	if( wasUARTEnabled) {
-		USART2->CR1 |= 1;
+	USART2->BRR = BaudrateTemp;
+
+
+	if(WasUartEnable)
+	{
+		USART2->CR1 |=  1;
 	}
 
 }
 
-static uint_fast8_t open(uint32_t baud) {
-
-	if (!isOpenFlag) {
-		RCC->APB1ENR |= RCC_AHBENR_GPIOAEN;	// Enable the USART clock
-
-		USART2->CR1 = 0;					// Clear the USART2 Register
-
-		RCC->AHBENR |= RCC_AHBENR_GPIOAEN;	// Enable the GPIO clock
-
-		GPIOA->MODER &= ~(3 << 4); 			// Clear the PA2 MODER
-		GPIOA->MODER |= (2 << 4);			// Set the PA2 MODER to Alternate Function
-
-		GPIOA->MODER &= ~(3 << 6);
-		GPIOA->MODER |= (2 << 6);			// Set the PA3 MODER to the alternate function
-
-		GPIOA->AFR[0] &= ~(0xF << 8);		// Clear the PA2 Configuration
-		GPIOA->AFR[0] |= (1 << 8);			// Set 'which' Alternate function mode. In this case "AF-1".
-
-		GPIOA->AFR[0] &= ~(0xF << 12);
-		GPIOA->AFR[0] |= (1 << 12);
-
-		setBaudRate(baud);
-
-		USART2->CR1 |= (1<<15)|   1     | (1<<3) | (1<<2);
-		//              OS8     USART EN     Tx        Rx
-
-		isOpenFlag = TRUE;
-	}
-
-	return TRUE;
-}
-
-static uint_fast8_t isWriteBusy() {
-    if( USART2->ISR & (1<<7)) {
-    	return FALSE;
-    }
-	return TRUE;
-}
-
-static uint_fast8_t sendByte(uint8_t source) {
-
-	if( isOpenFlag ) {
-		while(isWriteBusy());
-		USART2->TDR = source;
-		return TRUE;
-	}
-	return FALSE;
-
-}
-
-static int_fast8_t doesReceiveBufferHaveData(void) {
-	if (isOpenFlag) {
-		if (USART2->ISR & (1 << 5)) {
-			return TRUE;
-		}
+/////////////////////////////////////////////////////////////////////////
+///	\brief	you can use this function to check if the write buffer is
+///	empty and ready for new data
+///
+///	\param destination pointer to return the read byte
+///	\return TRUE = Busy else ready. else false
+/////////////////////////////////////////////////////////////////////////
+static uint_fast8_t IsWriteBusy(void)
+{
+	if ( USART2->ISR & (1<<7) )
+	{
 		return FALSE;
 	}
-	return -1;
+
+	return TRUE;
 }
 
-static int_fast8_t getByte(uint8_t *destination) {
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Open the serial port.
+///
+/// \param baudrate set the serial port baud rate
+///
+/// \return true = success else port is already open
+///////////////////////////////////////////////////////////////////////////////
+static uint_fast8_t Open(uint32_t baudrate)
+{
 
-	int_fast8_t result = doesReceiveBufferHaveData();
+	if(!IsOpenFlag)
+	{
+		RCC->APB1ENR |= (1<<17); // en USART clock
 
-	if (result) {
-		// DataConverter buffer;
-		// buffer.ui16_t = USART2->RDR;
-		//destination = buffer.ui8_t;
-		*destination = USART2->RDR;
+		USART2->CR1 = 0;
+
+		RCC->AHBENR |= (1<<17); // en GPIOA clock
+
+		GPIOA->MODER &= (~(3<<4) | ~(3<<6)); // clear PA2 moder
+		GPIOA->MODER  |= (2<<4) | (2<<6); // Set PA2 to alter function
+
+		GPIOA->AFR[0] &= (~(0xF << 8) | ~(0xF << 12)); // clear PA2 config
+		GPIOA->AFR[0] |= (1<<8) | (1<<12);
+
+		// set baudrate
+		Setbaudrate(baudrate);
+
+
+		USART2->CR1 |= (1<<15) | 1 | (1<<3) | (1<<2);
+
+		IsOpenFlag = TRUE;
 	}
-	return result;
+
+	// set baudrate
+	Setbaudrate(baudrate);
+    return FALSE;
 }
 
-static uint_fast8_t sendString(const uint8_t *source) {
-	if (isSerialOpen() && source) {
-		while (*source) {
-			if (!sendByte(*source)) {
-				return FALSE;
-			}
-			source++;
-		}
+
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Send a single byte
+///
+/// \return true = success else port is not open
+///////////////////////////////////////////////////////////////////////////////
+static uint_fast8_t SendByte(uint8_t source)
+{
+	if(IsOpenFlag)
+	{
+		while( IsWriteBusy() );
+
+		USART2->TDR = source;
+
 		return TRUE;
 	}
-	return FALSE;
+
+    return FALSE;
+}
+///////////////////////////////////////////////////////////////////////////////
+/// \brief return the serial receive byte buffer state
+///
+/// \return      1 = we have data
+///              0 = no data to read
+///             -1 = Port is not open
+///////////////////////////////////////////////////////////////////////////////
+static int_fast8_t DoesReceiveBufferHaveData(void)
+{
+	if(IsOpenFlag)
+	{
+		if(USART2->ISR & (1<<5))
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+    return -1;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief serial port for reading serial byte.
+///
+///	\note Data is still return even if corrupted. Make sure that you check the function return state.
+///
+/// \param destination pointer to return the newly read byte.
+///
+/// \return      1 = success on reading a byte
+///              0 = no data to read or
+///             -1 = Port is not open 	or the destination pointer is invalid
+///										or if the data is corrupted (ie, framing error or buffer overflow)
+///////////////////////////////////////////////////////////////////////////////
+static int_fast8_t GetByte(uint8_t *destination)
+{
+	int_fast8_t Result = DoesReceiveBufferHaveData();
+
+	if( !destination )
+	{
+		return -1;
+	}
+
+	if(Result)
+	{
+
+		if (USART2->ISR & (1<<3))
+		{
+			USART2->ICR |= (1<<3);
+			Result = -1;
+		}
+
+		if (USART2->ISR & (1<<1))
+		{
+			USART2->ICR |= (1<<1);
+			Result = -1;
+		}
+
+		*destination = USART2->RDR;
+	}
+
+    return Result;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Write a string
+///
+/// \param source pointer to the string to write. must end with null
+///
+/// \return true = success else either the port is not open or the pointer
+/// to the array is invalid.
+///////////////////////////////////////////////////////////////////////////////
+static uint_fast8_t SendString(const uint8_t *source)
+{
+    if (IsOpenFlag && source)
+    {
+        while(*source)
+        {
+            if (!SendByte(*source) )
+            {
+                return FALSE;
+            }
+            source++;
+        }
+        return TRUE;
+    }
+    return FALSE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -139,13 +251,13 @@ static uint_fast8_t sendString(const uint8_t *source) {
 /// \return true = success else either the port is not open or the pointer
 /// to the array is invalid.
 ///////////////////////////////////////////////////////////////////////////////
-static uint_fast8_t sendArray(const uint8_t *source, uint32_t length)
+static uint_fast8_t SendArray(const uint8_t *source, uint32_t length)
 {
-    if (isOpenFlag && source)
+    if (IsOpenFlag && source)
     {
         for ( ; length ; length--)
         {
-            if ( !sendByte(*source) )
+            if ( !SendByte(*source) )
             {
                 return FALSE;
             }
@@ -162,15 +274,12 @@ static uint_fast8_t sendArray(const uint8_t *source, uint32_t length)
 /// /sa SerialInterface
 ///////////////////////////////////////////////////////////////////////////////
 SerialInterface SerialPort2 = {
-                                    isSerialOpen,
-                                    open,
-                                    close,
-                                    sendByte,
-                                    sendString,
-                                    sendArray,
-                                    doesReceiveBufferHaveData,
-                                    getByte
+                                    IsSerialOpen,
+                                    Open,
+                                    Close,
+                                    SendByte,
+                                    SendString,
+                                    SendArray,
+                                    DoesReceiveBufferHaveData,
+                                    GetByte
                                 };
-
-
-

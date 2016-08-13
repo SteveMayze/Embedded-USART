@@ -28,9 +28,7 @@ src/MCU/usart2.o: ../src/MCU/usart2.c ../include/MCU/usart2.h \
  ../system/include/stm32f0-stdperiph/stm32f0xx_usart.h \
  ../system/include/stm32f0-stdperiph/stm32f0xx_wwdg.h \
  ../system/include/stm32f0-stdperiph/stm32f0xx_misc.h \
- ../include/MCU/SeriaStructure.h ../include/MCU/../common.h \
- ../system/include/cmsis/cmsis_device.h \
- ../system/include/cmsis/stm32f0xx.h
+ ../include/MCU/SeriaStructure.h ../include/MCU/../common.h
 
 ../include/MCU/usart2.h:
 
@@ -99,7 +97,3 @@ src/MCU/usart2.o: ../src/MCU/usart2.c ../include/MCU/usart2.h \
 ../include/MCU/SeriaStructure.h:
 
 ../include/MCU/../common.h:
-
-../system/include/cmsis/cmsis_device.h:
-
-../system/include/cmsis/stm32f0xx.h:
