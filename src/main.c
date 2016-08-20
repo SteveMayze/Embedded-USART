@@ -9,6 +9,11 @@
 #include "MCU/usart2.h"
 #include "MCU/tick.h"
 
+
+#define TEST_BLOCK_2
+
+
+#ifdef TEST_BLOCK_1
 /////////////////////////////////////////////////////////////////////////
 ///	\brief the first user code function to be called after the ARM M0
 ///	has initial.
@@ -35,3 +40,32 @@ void main(void)
         }
     }
 }
+#endif
+
+
+
+#ifdef TEST_BLOCK_2
+#include "LIST/fifo.h"
+
+/////////////////////////////////////////////////////////////////////////
+///	\brief the first user code function to be called after the ARM M0
+///	has initial.
+/////////////////////////////////////////////////////////////////////////
+void main(void)
+{
+    FIFOQueue queue;
+    queue.front = queue.rear = MAXQUEUESIZE-1;
+
+	uint_fast8_t data = 10;
+	uint_fast8_t tempData;
+    for ( ;; )
+    {
+    	while(FIFO.Insert(&queue, data++)){
+    		;
+    	}
+    	while(FIFO.Remove(&queue, &tempData)){
+    		data = tempData;
+    	}
+    }
+}
+#endif

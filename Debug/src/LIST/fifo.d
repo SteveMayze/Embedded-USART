@@ -1,5 +1,6 @@
-src/main.o: ../src/main.c ../include/common.h \
- ../system/include/cmsis/stm32f0xx.h ../system/include/cmsis/core_cm0.h \
+src/LIST/fifo.o: ../src/LIST/fifo.c ../include/LIST/fifo.h \
+ ../include/LIST/../common.h ../system/include/cmsis/stm32f0xx.h \
+ ../system/include/cmsis/core_cm0.h \
  ../system/include/cmsis/core_cmInstr.h \
  ../system/include/cmsis/cmsis_gcc.h \
  ../system/include/cmsis/core_cmFunc.h \
@@ -27,12 +28,11 @@ src/main.o: ../src/main.c ../include/common.h \
  ../system/include/stm32f0-stdperiph/stm32f0xx_usart.h \
  ../system/include/stm32f0-stdperiph/stm32f0xx_wwdg.h \
  ../system/include/stm32f0-stdperiph/stm32f0xx_misc.h \
- ../include/MCU/led.h ../include/MCU/usart2.h \
- ../include/MCU/SeriaStructure.h ../include/MCU/../common.h \
- ../include/MCU/tick.h ../include/LIST/fifo.h ../include/LIST/../common.h \
  ../include/LIST/FiFoStructure.h
 
-../include/common.h:
+../include/LIST/fifo.h:
+
+../include/LIST/../common.h:
 
 ../system/include/cmsis/stm32f0xx.h:
 
@@ -93,19 +93,5 @@ src/main.o: ../src/main.c ../include/common.h \
 ../system/include/stm32f0-stdperiph/stm32f0xx_wwdg.h:
 
 ../system/include/stm32f0-stdperiph/stm32f0xx_misc.h:
-
-../include/MCU/led.h:
-
-../include/MCU/usart2.h:
-
-../include/MCU/SeriaStructure.h:
-
-../include/MCU/../common.h:
-
-../include/MCU/tick.h:
-
-../include/LIST/fifo.h:
-
-../include/LIST/../common.h:
 
 ../include/LIST/FiFoStructure.h:
