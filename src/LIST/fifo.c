@@ -1,53 +1,92 @@
-#include "LIST/fifo.h"
+//////////////////////////////////////////////////////////////////////////////
+///	\file fifo.c
+///
+///	\brief	FIFO Library
+///
+///	\Author	Steve Mayze
+///
+//////////////////////////////////////////////////////////////////////////////
 
+#include "LIST/fifo.h"
 
 //////////////////////////////////////////////////////////////////////
 /// \brief	Inserts a data item into the FIFO queue
 ///
-/// \param	FIFOQueue* 	A pointer to the queue to hold the data
-///			uint_fast8_t	The data to store in the queue
+/// \param	FIFOQueue *queue	The queue data to use
 ///
-/// \return	TRUE Successful insertion
-///			FALSE Overflow occurred
+/// \return	TRUE	The initialization completed OK
+///			ERROR	The queue is not defined
 //////////////////////////////////////////////////////////////////////
-static uint_fast8_t Insert(FIFOQueue *queue, const uint_fast8_t byte){
-	uint_fast8_t tempData = queue->rear;
-	if(queue->rear == MAXQUEUESIZE-1)
-		queue->rear = 0;
-	else
-		(queue->rear)++;
+static uint_fast8_t Initialize( FIFOQueue *queue ) {
 
-	// Check of overflow
-	if(queue->rear == queue->front) {
-		queue->rear = tempData; // Roll-back the insert
-		return FALSE;	// Overflow
+	if( queue ) {
+	    queue->front = queue->rear = MAXQUEUESIZE-1;
+
+	    for(int i = 0; i < MAXQUEUESIZE; i++){
+	    	queue->items[i] = 0;
+	    }
+	    return TRUE;
 	}
+	return ERROR;
 
-	queue->items[queue->rear] = byte;
-	return TRUE;
+}
+
+//////////////////////////////////////////////////////////////////////
+/// \brief	Inserts a data item into the FIFO queue
+///
+/// \param	FIFOQueue *queue 	A pointer to the queue to hold the data
+///			uint8_t byte	The data to store in the queue
+///
+/// \return	TRUE	Successful insertion
+///			FALSE	Overflow occurred
+///			ERROR	The queue is not defined.
+//////////////////////////////////////////////////////////////////////
+static uint_fast8_t Insert(FIFOQueue *queue, const uint8_t byte){
+	if( queue ){ // Check that the queue is valid
+		uint_fast8_t tempData = queue->rear;
+		if(MAXQUEUESIZE-1 == queue->rear)
+			queue->rear = 0;
+		else
+			(queue->rear)++;
+
+		// Check of overflow
+		if(queue->rear == queue->front) {
+			queue->rear = tempData; // Roll-back the insert
+			return FALSE;	// Overflow
+		}
+
+		queue->items[queue->rear] = byte;
+		return TRUE;
+	}
+	return ERROR;
 }
 
 //////////////////////////////////////////////////////////////////////
 /// \brief	Removes a data item from the FIFO queue and inserts into
 ///			dest.
 ///
-/// \param	FIFOQueue*	The queue to remove the data from
-///			uint_fast8_t	The data to receive the information
+/// \param	FIFOQueue *queue	The queue to remove the data from
+///			uint8_t *dest	The data to receive the information
 ///
-///	\return	TRUE The data was successfully removed from the queue
+///	\return	TRUE	The data was successfully removed from the queue
+///			FALSE	The queue is empty
+///			ERROR	The queue or destination are not defined.
 //////////////////////////////////////////////////////////////////////
-static uint_fast8_t Remove( FIFOQueue *queue, uint_fast8_t *dest ){
+static uint_fast8_t Remove( FIFOQueue *queue, uint8_t *dest ){
 
-	if( queue->front == queue->rear )
-		return FALSE;	// Underflow
+	if( queue && dest ){ // Check that the pointer to the destination is valid
+		if( queue->front == queue->rear )
+			return FALSE;	// Underflow
 
-	if( queue->front == MAXQUEUESIZE-1)
-		queue->front = 0;
-	else
-		(queue->front)++;
-	*dest = queue->items[queue->front];
+		if( MAXQUEUESIZE-1 == queue->front )
+			queue->front = 0;
+		else
+			(queue->front)++;
+		*dest = queue->items[queue->front];
+		return TRUE;
+	}
 
-	return TRUE;
+	return ERROR;
 }
 
 
@@ -55,6 +94,7 @@ static uint_fast8_t Remove( FIFOQueue *queue, uint_fast8_t *dest ){
 /// \brief Defines the standard implementation for the FIFO queue
 //////////////////////////////////////////////////////////////////////////
 FIFOInterface FIFO = {
+		Initialize,
 		Insert,
 		Remove
 };

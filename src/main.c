@@ -10,14 +10,14 @@
 #include "MCU/tick.h"
 
 
-#define TEST_BLOCK_2
+#define TEST_BLOCK_4
 
 
-#ifdef TEST_BLOCK_1
 /////////////////////////////////////////////////////////////////////////
 ///	\brief the first user code function to be called after the ARM M0
 ///	has initial.
 /////////////////////////////////////////////////////////////////////////
+#ifdef TEST_BLOCK_1
 void main(void)
 {
     uint8_t tempData;
@@ -46,18 +46,13 @@ void main(void)
 
 #ifdef TEST_BLOCK_2
 #include "LIST/fifo.h"
-
-/////////////////////////////////////////////////////////////////////////
-///	\brief the first user code function to be called after the ARM M0
-///	has initial.
-/////////////////////////////////////////////////////////////////////////
 void main(void)
 {
     FIFOQueue queue;
-    queue.front = queue.rear = MAXQUEUESIZE-1;
+    FIFO.Initialize(&queue);
 
-	uint_fast8_t data = 10;
-	uint_fast8_t tempData;
+	uint8_t data = 10;
+	uint8_t tempData;
     for ( ;; )
     {
     	while(FIFO.Insert(&queue, data++)){
@@ -68,4 +63,74 @@ void main(void)
     	}
     }
 }
+#endif
+
+#ifdef TEST_BLOCK_3
+#include "LIST/fifo.h"
+void main(void)
+{
+    uint8_t tempData, sendData;
+
+    Led_Init();
+    Tick_init();
+
+    SerialPort2.Open(115200);
+
+    FIFOQueue queue;
+    FIFO.Initialize(&queue);
+
+    for ( ;; )
+    {
+        if(SerialPort2.GetByte(&tempData))
+        {
+        	if ( FALSE == FIFO.Insert(&queue, tempData)) {
+        		SerialPort2.SendString("Buffer is full\r\n");
+        	}
+        }
+        if(FIFO.Remove(&queue, &sendData)) {
+        	SerialPort2.SendByte(sendData);
+    		Led_Toggle(); // Toggle each byte
+        }
+    }
+}
+#endif
+
+#ifdef TEST_BLOCK_4
+#include "LIST/fifo.h"
+
+void main(void)
+{
+    uint8_t tempData, sendData;
+    uint_fast8_t fifoReturnValue;
+
+    Led_Init();
+    Tick_init();
+
+    SerialPort2.Open(115200);
+
+    FIFOQueue queue;
+    FIFO.Initialize(&queue);
+
+    for ( ;; )
+    {
+        if(SerialPort2.GetByte(&tempData))
+        {
+        	if ( FALSE == FIFO.Insert(&queue, tempData)) {
+        		// SerialPort2.SendString("Buffer is full\r\n");
+        		for(;;){
+            		fifoReturnValue = FIFO.Remove(&queue, &sendData);
+            		if( FALSE == fifoReturnValue){
+            			FIFO.Insert(&queue, tempData);
+    					break;
+            		}
+            		else if ( TRUE == fifoReturnValue){
+            			SerialPort2.SendByte(sendData);
+                		Led_Toggle(); // Toggle each byte
+            		}
+        		}
+        	}
+        }
+    }
+}
+
 #endif

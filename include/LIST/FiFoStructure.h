@@ -1,16 +1,35 @@
+//////////////////////////////////////////////////////////////////////////////
+///	\file FifoStructure.h
+///
+///	\brief	FIFO Library API structure
+///
+///	\Author	Steve Mayze
+///
+//////////////////////////////////////////////////////////////////////////////
+
 #ifndef _FIFO_STRUCTURE_H_LIST_
 #define _FIFO_STRUCTURE_H_LIST_
 
 	#include "../common.h"
+
+//////////////////////////////////////////////////////////////////////////////
+// \brief defines the FIFO buffer maximum size
+//////////////////////////////////////////////////////////////////////////////
 #ifdef _FIFO_TEST_
-#define MAXQUEUESIZE 5
+#define MAXQUEUESIZE 3
 #else
 #define MAXQUEUESIZE 100
 #endif
 
+//////////////////////////////////////////////////////////////////////////////
+// \brief The structure for the FIFO queue as an array of uint8_t
+//////////////////////////////////////////////////////////////////////////////
 	typedef struct {
 
-		uint_fast8_t items[MAXQUEUESIZE];
+		/// \brief The FIFO buffer of uint8_t
+		uint8_t items[MAXQUEUESIZE];
+
+		/// \brief The front and rear track the insert and remove point
 		int front, rear;
 
 	} FIFOQueue;
@@ -21,29 +40,13 @@
 	//////////////////////////////////////////////////////////////////////////
 	typedef struct {
 
-		//////////////////////////////////////////////////////////////////////
-		/// \brief	Inserts a data item into the FIFO queue
-		///
-		/// \param	FIFOQueue* 	A pointer to the queue to hold the data
-		///			uint_fast8_t	The data to store in the queue
-		///
-		/// \return	TRUE Successful insertion
-		///			FALSE Overflow occurred
-		//////////////////////////////////////////////////////////////////////
-		uint_fast8_t (*Insert)(FIFOQueue *queue, const uint_fast8_t byte);
+		uint_fast8_t (*Initialize)( FIFOQueue *queue );
 
-		//////////////////////////////////////////////////////////////////////
-		/// \brief	Removes a data item from the FIFO queue and inserts into
-		///			dest.
-		///
-		/// \param	FIFOQueue*	The queue to remove the data from
-		///			uint_fast8_t	The data to receive the information
-		///
-		///	\return	TRUE The data was successfully removed from the queue
-		//////////////////////////////////////////////////////////////////////
-		uint_fast8_t (*Remove)(FIFOQueue *queue, uint_fast8_t *dest);
+		uint_fast8_t (*Insert)(FIFOQueue *queue, const uint8_t byte);
+
+		uint_fast8_t (*Remove)(FIFOQueue *queue, uint8_t *dest);
 
 
 	} FIFOInterface;
 
-#endif
+#endif // _FIFO_STRUCTURE_H_LIST_
