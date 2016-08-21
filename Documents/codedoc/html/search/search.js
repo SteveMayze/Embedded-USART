@@ -10,9 +10,9 @@ var indexSectionsWithContent =
   0: "cdefghilmorstu",
   1: "dfst",
   2: "cflmstu",
-  3: "lmst",
+  3: "dlmstu",
   4: "cdfgiorsu",
-  5: "cefghlmt"
+  5: "cefghilmt"
 };
 
 var indexSectionNames =

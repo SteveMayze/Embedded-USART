@@ -29,8 +29,7 @@ src/main.o: ../src/main.c ../include/common.h \
  ../system/include/stm32f0-stdperiph/stm32f0xx_misc.h \
  ../include/MCU/led.h ../include/MCU/usart2.h \
  ../include/MCU/SerialStructure.h ../include/MCU/../common.h \
- ../include/MCU/tick.h ../include/LIST/fifo.h ../include/LIST/../common.h \
- ../include/LIST/FiFoStructure.h
+ ../include/MCU/tick.h
 
 ../include/common.h:
 
@@ -103,9 +102,3 @@ src/main.o: ../src/main.c ../include/common.h \
 ../include/MCU/../common.h:
 
 ../include/MCU/tick.h:
-
-../include/LIST/fifo.h:
-
-../include/LIST/../common.h:
-
-../include/LIST/FiFoStructure.h:

@@ -18,9 +18,11 @@
 /// \param	FIFOQueue *queue	The queue data to use
 ///
 /// \return	TRUE	The initialization completed OK
-///			ERROR	The queue is not defined
+///			INVALID_POINTER_ERROR	The queue is not defined
 //////////////////////////////////////////////////////////////////////
 static uint_fast8_t Initialize( FIFOQueue *queue ) {
+
+	/// \todo Allow the queue to be configured with a size parameter
 
 	if( queue ) {
 	    queue->front = queue->rear = MAXQUEUESIZE-1;
@@ -30,7 +32,7 @@ static uint_fast8_t Initialize( FIFOQueue *queue ) {
 	    }
 	    return TRUE;
 	}
-	return ERROR;
+	return INVALID_POINTER_ERROR;
 
 }
 
@@ -42,7 +44,7 @@ static uint_fast8_t Initialize( FIFOQueue *queue ) {
 ///
 /// \return	TRUE	Successful insertion
 ///			FALSE	Overflow occurred
-///			ERROR	The queue is not defined.
+///			INVALID_POINTER_ERROR	The queue is not defined.
 //////////////////////////////////////////////////////////////////////
 static uint_fast8_t Insert(FIFOQueue *queue, const uint8_t byte){
 	if( queue ){ // Check that the queue is valid
@@ -61,7 +63,7 @@ static uint_fast8_t Insert(FIFOQueue *queue, const uint8_t byte){
 		queue->items[queue->rear] = byte;
 		return TRUE;
 	}
-	return ERROR;
+	return INVALID_POINTER_ERROR;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -73,7 +75,7 @@ static uint_fast8_t Insert(FIFOQueue *queue, const uint8_t byte){
 ///
 ///	\return	TRUE	The data was successfully removed from the queue
 ///			FALSE	The queue is empty
-///			ERROR	The queue or destination are not defined.
+///			INVALID_POINTER_ERROR	The queue or destination are not defined.
 //////////////////////////////////////////////////////////////////////
 static uint_fast8_t Remove( FIFOQueue *queue, uint8_t *dest ){
 
@@ -89,7 +91,7 @@ static uint_fast8_t Remove( FIFOQueue *queue, uint8_t *dest ){
 		return TRUE;
 	}
 
-	return ERROR;
+	return INVALID_POINTER_ERROR;
 }
 
 

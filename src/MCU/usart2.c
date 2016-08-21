@@ -6,6 +6,7 @@
 ///	\author: Ronald Sousa (Opticalworm)
 /////////////////////////////////////////////////////////////////////////
 #include "MCU/usart2.h"
+#include "LIST/fifo.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Alternative function set bit 1 for AFR2
@@ -18,15 +19,21 @@
 #define GPIO_AFRL_AFR3_0 (uint32_t) 0x00001000
 
 /////////////////////////////////////////////////////////////////////////
-/// \brief enable 16x oversampling. Used to reduce the baudrate calculation
+/// \brief enable 16x over-sampling. Used to reduce the baudrate calculation
 /// error.
 /////////////////////////////////////////////////////////////////////////
 //#define USART_OVER_SAMPLE_16
 
 ///////////////////////////////////////////////////////////////////////////////
-/// \brief Keeps track if the serial port is configure and opend
+/// \brief Keeps track if the serial port is configure and opened
 ///////////////////////////////////////////////////////////////////////////////
 static uint_fast8_t IsOpenFlag = FALSE;
+
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief The queue for buffering the information coming in on the USART2
+///////////////////////////////////////////////////////////////////////////////
+static FIFOQueue queue;
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief return the serial open state
@@ -46,6 +53,7 @@ static uint_fast8_t IsSerialOpen(void)
 static void Close(void)
 {
 	USART2->CR1 &= ~(USART_CR1_UE);
+	NVIC_DisableIRQ(USART2_IRQn);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -79,6 +87,7 @@ static void Setbaudrate(const uint32_t baud)
 
 	if(WasUartEnable)
 	{
+		NVIC_EnableIRQ(USART2_IRQn);
 		USART2->CR1 |=  USART_CR1_UE;
 	}
 
@@ -112,6 +121,8 @@ static uint_fast8_t Open(const uint32_t baudrate)
 
 	if(!IsOpenFlag)
 	{
+		FIFO.Initialize(&queue);
+
 		RCC->APB1ENR |= RCC_APB1ENR_USART2EN; // en USART clock
 
 		USART2->CR1 = 0; // Reset the USART CR1 register
@@ -127,6 +138,12 @@ static uint_fast8_t Open(const uint32_t baudrate)
 		// set baudrate
 		Setbaudrate(baudrate);
 
+		NVIC_SetPriority(USART2_IRQn, 0);	// Set the USART to the highest priority
+		NVIC_EnableIRQ(USART2_IRQn);	// Enable the interrupt
+
+		USART2->CR3 |= USART_CR3_EIE;
+
+		USART2->CR1 |= USART_CR1_PEIE | USART_CR1_RXNEIE;
 
 		USART2->CR1 |= USART_CR1_OVER8 | USART_CR1_UE | USART_CR1_TE | USART_CR1_RE;
 
@@ -163,11 +180,11 @@ static uint_fast8_t SendByte(const uint8_t source)
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief return the serial receive byte buffer state
 ///
-/// \return      1 = we have data
-///              0 = no data to read
-///             -1 = Port is not open
+/// \return	TRUE = we have data
+///			FALSE = no data to read
+///			ERROR = Port is not open
 ///////////////////////////////////////////////////////////////////////////////
-static int_fast8_t DoesReceiveBufferHaveData(void)
+int_fast8_t DoesReceiveBufferHaveData(void)
 {
 	if(IsOpenFlag)
 	{
@@ -191,50 +208,51 @@ static int_fast8_t DoesReceiveBufferHaveData(void)
 ///
 /// \param destination pointer to return the newly read byte.
 ///
-/// \return      1 = success on reading a byte
-///              0 = no data to read or
-///             -1 = Port is not open 	or the destination pointer is invalid
+/// \return      TRUE = success on reading a byte
+///              FALSE = no data to read or
+///              ERROR = Port is not open 	or the destination pointer is invalid
 ///										or if the data is corrupted (ie, framing error or buffer overflow)
+///				INVALID_POINTER_ERROR = Invalid pointer
 ///////////////////////////////////////////////////////////////////////////////
-static int_fast8_t GetByte(uint8_t *destination)
-{
-	int_fast8_t Result = DoesReceiveBufferHaveData();
-
-	if( !destination )
-	{
-		return -1;
+static int_fast8_t GetByte(uint8_t *destination) {
+	if(IsOpenFlag) {
+		if (destination) {
+			return FIFO.Remove(&queue, destination);
+		}
 	}
+	return FALSE;
 
-	if(Result)
+}
+
+static inline void handleInterrupt(void)
+{
+	uint8_t destination;
+
+	if(USART2->ISR & USART_ISR_RXNE)
 	{
-		*destination = USART2->RDR;
+		destination = USART2->RDR;
+		FIFO.Insert(&queue, destination);
 	}
 
 	if (USART2->ISR & USART_ISR_ORE)
 	{
 		USART2->ICR |= USART_ICR_ORECF;
-		Result = -1;
 	}
 
 	if (USART2->ISR & USART_ISR_FE)
 	{
 		USART2->ICR |= USART_ICR_FECF;
-		Result = -1;
 	}
 
 	if (USART2->ISR & USART_ISR_NE)
 	{
 		USART2->ICR |= USART_ICR_NCF;
-		Result = -1;
 	}
 
 	if (USART2->ISR & USART_ISR_PE)
 	{
 		USART2->ICR |= USART_ICR_PECF;
-		Result = -1;
 	}
-
-    return Result;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -286,6 +304,17 @@ static uint_fast8_t SendArray(const uint8_t *source, uint32_t length)
         return TRUE;
     }
     return FALSE;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+/// \brief Interrupt handler for the USART2
+///
+///////////////////////////////////////////////////////////////////////////////
+void USART2_IRQHandler(void){
+
+	handleInterrupt();
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////

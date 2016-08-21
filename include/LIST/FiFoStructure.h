@@ -16,7 +16,7 @@
 #ifdef _FIFO_TEST_
 #define MAXQUEUESIZE 3	///< defines the FIFO buffer maximum size
 #else
-#define MAXQUEUESIZE 100	///< defines the FIFO buffer maximum size
+#define MAXQUEUESIZE 256	///< defines the FIFO buffer maximum size
 #endif
 
 //////////////////////////////////////////////////////////////////////////////

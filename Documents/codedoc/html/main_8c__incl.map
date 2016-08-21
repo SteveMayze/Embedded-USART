@@ -1,9 +1,7 @@
 <map id="/home/vagrant/Workspaces/Embedded/USART/usart/src/main.c" name="/home/vagrant/Workspaces/Embedded/USART/usart/src/main.c">
-<area shape="rect" id="node2" href="$common_8h.html" title="Holds all common code definitions. " alt="" coords="226,245,307,272"/>
-<area shape="rect" id="node6" href="$led_8h.html" title="MCU/led.h" alt="" coords="30,171,115,197"/>
-<area shape="rect" id="node7" href="$usart2_8h.html" title="MCU/usart2.h" alt="" coords="134,96,238,123"/>
-<area shape="rect" id="node9" href="$tick_8h.html" title="MCU/tick.h" alt="" coords="268,96,356,123"/>
-<area shape="rect" id="node10" href="$fifo_8h.html" title="FIFO Library. " alt="" coords="391,96,472,123"/>
-<area shape="rect" id="node8" href="$_serial_structure_8h.html" title="define the serial interface layer structure " alt="" coords="190,171,343,197"/>
-<area shape="rect" id="node11" href="$_fi_fo_structure_8h.html" title="FIFO Library API structure. " alt="" coords="470,171,580,197"/>
+<area shape="rect" id="node2" href="$common_8h.html" title="Holds all common code definitions. " alt="" coords="117,245,199,272"/>
+<area shape="rect" id="node6" href="$led_8h.html" title="MCU/led.h" alt="" coords="36,171,121,197"/>
+<area shape="rect" id="node7" href="$usart2_8h.html" title="MCU/usart2.h" alt="" coords="116,96,220,123"/>
+<area shape="rect" id="node9" href="$tick_8h.html" title="MCU/tick.h" alt="" coords="294,96,383,123"/>
+<area shape="rect" id="node8" href="$_serial_structure_8h.html" title="define the serial interface layer structure " alt="" coords="196,171,349,197"/>
 </map>

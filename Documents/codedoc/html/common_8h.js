@@ -7,5 +7,6 @@ var common_8h =
     [ "FALSE", "common_8h.html#aa93f0eb578d23995850d61f7d61c55c1", null ],
     [ "FIRMWARE_VERSION", "common_8h.html#aa14dc39d52ab121ceb570f1a265385e0", null ],
     [ "HARDWARE_VERSION", "common_8h.html#a7c770e481dd85c7ffb40e3b3edb0beb5", null ],
+    [ "INVALID_POINTER_ERROR", "common_8h.html#a9109b45a70e8ee7d140b4b4eb097ecea", null ],
     [ "TRUE", "common_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d", null ]
 ];

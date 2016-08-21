@@ -1,13 +1,13 @@
 <map id="/home/vagrant/Workspaces/Embedded/USART/usart/include/common.h" name="/home/vagrant/Workspaces/Embedded/USART/usart/include/common.h">
-<area shape="rect" id="node2" href="$main_8c.html" title="This is the main program code. " alt="" coords="410,325,645,366"/>
-<area shape="rect" id="node3" href="$fifo_8h.html" title="FIFO Library. " alt="" coords="5,213,221,269"/>
-<area shape="rect" id="node5" href="$_fi_fo_structure_8h.html" title="FIFO Library API structure. " alt="" coords="35,109,251,165"/>
-<area shape="rect" id="node6" href="$led_8h.html" title="/home/vagrant/Workspaces\l/Embedded/USART/usart/include\l/MCU/led.h" alt="" coords="275,109,491,165"/>
-<area shape="rect" id="node8" href="$_serial_structure_8h.html" title="define the serial interface layer structure " alt="" coords="856,109,1072,165"/>
-<area shape="rect" id="node9" href="$usart2_8h.html" title="/home/vagrant/Workspaces\l/Embedded/USART/usart/include\l/MCU/usart2.h" alt="" coords="835,213,1051,269"/>
-<area shape="rect" id="node11" href="$tick_8h.html" title="/home/vagrant/Workspaces\l/Embedded/USART/usart/include\l/MCU/tick.h" alt="" coords="565,109,781,165"/>
-<area shape="rect" id="node4" href="$fifo_8c.html" title="FIFO Library. " alt="" coords="17,317,209,373"/>
-<area shape="rect" id="node7" href="$led_8c.html" title="this is the LED hardware interface layer. " alt="" coords="297,213,489,269"/>
-<area shape="rect" id="node10" href="$usart2_8c.html" title="STM32 serial2 MCU hardware interface layer. to maintain code portability, the hardware related code i..." alt="" coords="846,317,1039,373"/>
-<area shape="rect" id="node12" href="$tick_8c.html" title="implements mili&#45;second tick counter. " alt="" coords="617,213,809,269"/>
+<area shape="rect" id="node2" href="$main_8c.html" title="This is the main program code. " alt="" coords="639,325,875,366"/>
+<area shape="rect" id="node3" href="$fifo_8h.html" title="FIFO Library. " alt="" coords="20,213,236,269"/>
+<area shape="rect" id="node6" href="$_fi_fo_structure_8h.html" title="FIFO Library API structure. " alt="" coords="28,109,244,165"/>
+<area shape="rect" id="node7" href="$led_8h.html" title="/home/vagrant/Workspaces\l/Embedded/USART/usart/include\l/MCU/led.h" alt="" coords="559,109,775,165"/>
+<area shape="rect" id="node9" href="$_serial_structure_8h.html" title="define the serial interface layer structure " alt="" coords="319,109,535,165"/>
+<area shape="rect" id="node10" href="$usart2_8h.html" title="/home/vagrant/Workspaces\l/Embedded/USART/usart/include\l/MCU/usart2.h" alt="" coords="260,213,476,269"/>
+<area shape="rect" id="node11" href="$tick_8h.html" title="/home/vagrant/Workspaces\l/Embedded/USART/usart/include\l/MCU/tick.h" alt="" coords="799,109,1015,165"/>
+<area shape="rect" id="node4" href="$fifo_8c.html" title="FIFO Library. " alt="" coords="31,317,224,373"/>
+<area shape="rect" id="node5" href="$usart2_8c.html" title="STM32 serial2 MCU hardware interface layer. to maintain code portability, the hardware related code i..." alt="" coords="261,317,453,373"/>
+<area shape="rect" id="node8" href="$led_8c.html" title="this is the LED hardware interface layer. " alt="" coords="501,213,693,269"/>
+<area shape="rect" id="node12" href="$tick_8c.html" title="implements mili&#45;second tick counter. " alt="" coords="821,213,1013,269"/>
 </map>

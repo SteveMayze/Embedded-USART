@@ -1333,8 +1333,6 @@ Discarded input sections
  .bss           0x00000000        0x0 ./src/MCU/tick.o
  .text.Tick_GetMs
                 0x00000000        0xc ./src/MCU/tick.o
- .text.Tick_DelayMs
-                0x00000000       0x14 ./src/MCU/tick.o
  .text.Tick_DelayMs_NonBlocking
                 0x00000000       0x30 ./src/MCU/tick.o
  .debug_macro   0x00000000      0x83e ./src/MCU/tick.o
@@ -1394,7 +1392,8 @@ Discarded input sections
  .debug_macro   0x00000000      0x353 ./src/MCU/tick.o
  .debug_macro   0x00000000       0x34 ./src/MCU/tick.o
  .debug_macro   0x00000000       0x3a ./src/MCU/tick.o
- .debug_macro   0x00000000       0x2e ./src/MCU/tick.o
+ .debug_macro   0x00000000       0x34 ./src/MCU/tick.o
+ .group         0x00000000        0x8 ./src/MCU/usart2.o
  .group         0x00000000        0x8 ./src/MCU/usart2.o
  .group         0x00000000        0x8 ./src/MCU/usart2.o
  .group         0x00000000        0x8 ./src/MCU/usart2.o
@@ -1513,8 +1512,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x353 ./src/MCU/usart2.o
  .debug_macro   0x00000000       0x34 ./src/MCU/usart2.o
  .debug_macro   0x00000000       0x3a ./src/MCU/usart2.o
- .debug_macro   0x00000000       0x2e ./src/MCU/usart2.o
- .group         0x00000000        0x8 ./src/LIST/fifo.o
+ .debug_macro   0x00000000       0x34 ./src/MCU/usart2.o
  .group         0x00000000        0x8 ./src/LIST/fifo.o
  .group         0x00000000        0x8 ./src/LIST/fifo.o
  .group         0x00000000        0x8 ./src/LIST/fifo.o
@@ -1634,7 +1632,8 @@ Discarded input sections
  .debug_macro   0x00000000      0x353 ./src/LIST/fifo.o
  .debug_macro   0x00000000       0x34 ./src/LIST/fifo.o
  .debug_macro   0x00000000       0x3a ./src/LIST/fifo.o
- .debug_macro   0x00000000       0x2e ./src/LIST/fifo.o
+ .debug_macro   0x00000000       0x34 ./src/LIST/fifo.o
+ .debug_macro   0x00000000       0x10 ./src/LIST/fifo.o
  .group         0x00000000        0x8 ./src/_write.o
  .text          0x00000000        0x0 ./src/_write.o
  .data          0x00000000        0x0 ./src/_write.o
@@ -1650,8 +1649,6 @@ Discarded input sections
  .comment       0x00000000       0x6f ./src/_write.o
  .ARM.attributes
                 0x00000000       0x31 ./src/_write.o
- .group         0x00000000        0x8 ./src/main.o
- .group         0x00000000        0x8 ./src/main.o
  .group         0x00000000        0x8 ./src/main.o
  .group         0x00000000        0x8 ./src/main.o
  .group         0x00000000        0x8 ./src/main.o
@@ -1770,9 +1767,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x353 ./src/main.o
  .debug_macro   0x00000000       0x34 ./src/main.o
  .debug_macro   0x00000000       0x3a ./src/main.o
- .debug_macro   0x00000000       0x2e ./src/main.o
- .debug_macro   0x00000000       0x10 ./src/main.o
- .debug_macro   0x00000000       0x10 ./src/main.o
+ .debug_macro   0x00000000       0x34 ./src/main.o
  .data          0x00000000        0x0 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/armv6-m/libgcc.a(_udivsi3.o)
  .bss           0x00000000        0x0 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/armv6-m/libgcc.a(_udivsi3.o)
  .data          0x00000000        0x0 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/armv6-m/libgcc.a(_dvmd_tls.o)
@@ -1881,7 +1876,7 @@ END GROUP
                 0x20001c00                __Main_Stack_Limit = (__stack - __Main_Stack_Size)
                 [!provide]                PROVIDE (_Main_Stack_Limit, __Main_Stack_Limit)
                 0x00000100                _Minimum_Stack_Size = 0x100
-                0x20000158                PROVIDE (_Heap_Begin, _end_noinit)
+                0x2000025c                PROVIDE (_Heap_Begin, _end_noinit)
                 0x20001c00                PROVIDE (_Heap_Limit, (__stack - __Main_Stack_Size))
 
 .isr_vector     0x08000000      0x230
@@ -1941,23 +1936,22 @@ END GROUP
                 0x0800022c                WWDG_IRQHandler
                 0x0800022c                TIM2_IRQHandler
                 0x0800022c                DMA1_Channel2_3_IRQHandler
-                0x0800022c                USART2_IRQHandler
                 0x0800022c                FLASH_IRQHandler
                 0x0800022c                USART1_IRQHandler
                 0x0800022c                TIM1_BRK_UP_TRG_COM_IRQHandler
 
 .inits          0x08000230       0x28
                 0x08000230                __data_regions_array_start = .
-                0x08000230        0x4 LONG 0x80013f8 LOADADDR (.data)
+                0x08000230        0x4 LONG 0x800148c LOADADDR (.data)
                 0x08000234        0x4 LONG 0x20000000 ADDR (.data)
                 0x08000238        0x4 LONG 0x200000b4 (ADDR (.data) + SIZEOF (.data))
-                0x0800023c        0x4 LONG 0x80013f8 LOADADDR (.data_CCMRAM)
+                0x0800023c        0x4 LONG 0x800148c LOADADDR (.data_CCMRAM)
                 0x08000240        0x4 LONG 0x0 ADDR (.data_CCMRAM)
                 0x08000244        0x4 LONG 0x0 (ADDR (.data_CCMRAM) + SIZEOF (.data_CCMRAM))
                 0x08000248                __data_regions_array_end = .
                 0x08000248                __bss_regions_array_start = .
                 0x08000248        0x4 LONG 0x200000b4 ADDR (.bss)
-                0x0800024c        0x4 LONG 0x20000158 (ADDR (.bss) + SIZEOF (.bss))
+                0x0800024c        0x4 LONG 0x2000025c (ADDR (.bss) + SIZEOF (.bss))
                 0x08000250        0x4 LONG 0x0 ADDR (.bss_CCMRAM)
                 0x08000254        0x4 LONG 0x0 (ADDR (.bss_CCMRAM) + SIZEOF (.bss_CCMRAM))
                 0x08000258                __bss_regions_array_end = .
@@ -1983,7 +1977,7 @@ END GROUP
 .flashtext
  *(.flashtext .flashtext.*)
 
-.text           0x08000258     0x119d
+.text           0x08000258     0x1231
  *(.text .text.*)
  .text._exit    0x08000258        0x4 ./system/src/newlib/_exit.o
                 0x08000258                _exit
@@ -2030,132 +2024,139 @@ END GROUP
  .text.Tick_init
                 0x08000614       0x44 ./src/MCU/tick.o
                 0x08000614                Tick_init
+ .text.Tick_DelayMs
+                0x08000658       0x14 ./src/MCU/tick.o
+                0x08000658                Tick_DelayMs
  .text.SysTick_Handler
-                0x08000658       0x10 ./src/MCU/tick.o
-                0x08000658                SysTick_Handler
+                0x0800066c       0x10 ./src/MCU/tick.o
+                0x0800066c                SysTick_Handler
  .text.IsSerialOpen
-                0x08000668        0xc ./src/MCU/usart2.o
- .text.Close    0x08000674       0x10 ./src/MCU/usart2.o
+                0x0800067c        0xc ./src/MCU/usart2.o
+ .text.Close    0x08000688       0x20 ./src/MCU/usart2.o
  .text.Setbaudrate
-                0x08000684       0x54 ./src/MCU/usart2.o
+                0x080006a8       0x60 ./src/MCU/usart2.o
  .text.IsWriteBusy
-                0x080006d8       0x14 ./src/MCU/usart2.o
- .text.Open     0x080006ec       0x68 ./src/MCU/usart2.o
+                0x08000708       0x14 ./src/MCU/usart2.o
+ .text.Open     0x0800071c       0xa4 ./src/MCU/usart2.o
  .text.SendByte
-                0x08000754       0x28 ./src/MCU/usart2.o
+                0x080007c0       0x28 ./src/MCU/usart2.o
  .text.DoesReceiveBufferHaveData
-                0x0800077c       0x28 ./src/MCU/usart2.o
- .text.GetByte  0x080007a4       0x7c ./src/MCU/usart2.o
+                0x080007e8       0x28 ./src/MCU/usart2.o
+                0x080007e8                DoesReceiveBufferHaveData
+ .text.GetByte  0x08000810       0x30 ./src/MCU/usart2.o
  .text.SendString
-                0x08000820       0x2c ./src/MCU/usart2.o
+                0x08000840       0x2c ./src/MCU/usart2.o
  .text.SendArray
-                0x0800084c       0x30 ./src/MCU/usart2.o
+                0x0800086c       0x30 ./src/MCU/usart2.o
+ .text.USART2_IRQHandler
+                0x0800089c       0x70 ./src/MCU/usart2.o
+                0x0800089c                USART2_IRQHandler
  .text.Initialize
-                0x0800087c       0x20 ./src/LIST/fifo.o
- .text.Insert   0x0800089c       0x30 ./src/LIST/fifo.o
- .text.Remove   0x080008cc       0x34 ./src/LIST/fifo.o
- .text.main     0x08000900       0x78 ./src/main.o
-                0x08000900                main
- .text          0x08000978      0x114 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/armv6-m/libgcc.a(_udivsi3.o)
-                0x08000978                __udivsi3
-                0x08000978                __aeabi_uidiv
-                0x08000a84                __aeabi_uidivmod
- .text          0x08000a8c        0x4 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/armv6-m/libgcc.a(_dvmd_tls.o)
-                0x08000a8c                __aeabi_ldiv0
-                0x08000a8c                __aeabi_idiv0
- .text.__errno  0x08000a90        0xc /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-errno.o)
-                0x08000a90                __errno
+                0x0800090c       0x28 ./src/LIST/fifo.o
+ .text.Insert   0x08000934       0x48 ./src/LIST/fifo.o
+ .text.Remove   0x0800097c       0x4c ./src/LIST/fifo.o
+ .text.main     0x080009c8       0x44 ./src/main.o
+                0x080009c8                main
+ .text          0x08000a0c      0x114 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/armv6-m/libgcc.a(_udivsi3.o)
+                0x08000a0c                __udivsi3
+                0x08000a0c                __aeabi_uidiv
+                0x08000b18                __aeabi_uidivmod
+ .text          0x08000b20        0x4 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/armv6-m/libgcc.a(_dvmd_tls.o)
+                0x08000b20                __aeabi_ldiv0
+                0x08000b20                __aeabi_idiv0
+ .text.__errno  0x08000b24        0xc /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-errno.o)
+                0x08000b24                __errno
  .text._vsnprintf_r
-                0x08000a9c       0x56 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-vsnprintf.o)
-                0x08000a9c                _vsnprintf_r
-                0x08000a9c                _vsniprintf_r
- *fill*         0x08000af2        0x2 
+                0x08000b30       0x56 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-vsnprintf.o)
+                0x08000b30                _vsnprintf_r
+                0x08000b30                _vsniprintf_r
+ *fill*         0x08000b86        0x2 
  .text.vsnprintf
-                0x08000af4       0x18 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-vsnprintf.o)
-                0x08000af4                vsnprintf
-                0x08000af4                vsniprintf
+                0x08000b88       0x18 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-vsnprintf.o)
+                0x08000b88                vsnprintf
+                0x08000b88                vsniprintf
  .text.__ssputs_r
-                0x08000b0c       0xc4 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-svfprintf.o)
-                0x08000b0c                __ssputs_r
+                0x08000ba0       0xc4 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-svfprintf.o)
+                0x08000ba0                __ssputs_r
  .text._svfprintf_r
-                0x08000bd0      0x1fc /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-svfprintf.o)
-                0x08000bd0                _svfprintf_r
-                0x08000bd0                _svfiprintf_r
+                0x08000c64      0x1fc /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-svfprintf.o)
+                0x08000c64                _svfprintf_r
+                0x08000c64                _svfiprintf_r
  .text._printf_common
-                0x08000dcc       0xdc /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x08000dcc                _printf_common
+                0x08000e60       0xdc /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x08000e60                _printf_common
  .text._printf_i
-                0x08000ea8      0x244 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x08000ea8                _printf_i
- .text.memchr   0x080010ec       0x16 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memchr-stub.o)
-                0x080010ec                memchr
- .text.memcpy   0x08001102       0x12 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memcpy-stub.o)
-                0x08001102                memcpy
- .text.memmove  0x08001114       0x2a /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memmove.o)
-                0x08001114                memmove
- *fill*         0x0800113e        0x2 
- .text._free_r  0x08001140       0x8c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-freer.o)
-                0x08001140                _free_r
+                0x08000f3c      0x244 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x08000f3c                _printf_i
+ .text.memchr   0x08001180       0x16 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memchr-stub.o)
+                0x08001180                memchr
+ .text.memcpy   0x08001196       0x12 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memcpy-stub.o)
+                0x08001196                memcpy
+ .text.memmove  0x080011a8       0x2a /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memmove.o)
+                0x080011a8                memmove
+ *fill*         0x080011d2        0x2 
+ .text._free_r  0x080011d4       0x8c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-freer.o)
+                0x080011d4                _free_r
  .text._malloc_r
-                0x080011cc       0xac /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-mallocr.o)
-                0x080011cc                _malloc_r
+                0x08001260       0xac /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-mallocr.o)
+                0x08001260                _malloc_r
  .text._realloc_r
-                0x08001278       0x4c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-reallocr.o)
-                0x08001278                _realloc_r
- .text._sbrk_r  0x080012c4       0x24 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-sbrkr.o)
-                0x080012c4                _sbrk_r
+                0x0800130c       0x4c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-reallocr.o)
+                0x0800130c                _realloc_r
+ .text._sbrk_r  0x08001358       0x24 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-sbrkr.o)
+                0x08001358                _sbrk_r
  .text._malloc_usable_size_r
-                0x080012e8       0x16 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-msizer.o)
-                0x080012e8                _malloc_usable_size_r
+                0x0800137c       0x16 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-msizer.o)
+                0x0800137c                _malloc_usable_size_r
  *(.rodata .rodata.* .constdata .constdata.*)
- *fill*         0x080012fe        0x2 
+ *fill*         0x08001392        0x2 
  .rodata.str1.4
-                0x08001300       0xc0 ./system/src/cortexm/exception_handlers.o
+                0x08001394       0xc0 ./system/src/cortexm/exception_handlers.o
                                  0xbd (size before relaxing)
  .rodata.str1.1
-                0x080013c0        0x2 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-impure.o)
+                0x08001454        0x2 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-impure.o)
  .rodata.str1.1
-                0x080013c2       0x11 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-svfprintf.o)
+                0x08001456       0x11 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-svfprintf.o)
  .rodata.str1.1
-                0x080013d3       0x22 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x08001467       0x22 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-vfprintf_i.o)
  *(vtable)
  *(.eh_frame*)
  *(.glue_7)
- .glue_7        0x080013f5        0x0 linker stubs
+ .glue_7        0x08001489        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x080013f5        0x0 linker stubs
+ .glue_7t       0x08001489        0x0 linker stubs
 
-.vfp11_veneer   0x080013f8        0x0
- .vfp11_veneer  0x080013f8        0x0 linker stubs
+.vfp11_veneer   0x0800148c        0x0
+ .vfp11_veneer  0x0800148c        0x0 linker stubs
 
-.v4_bx          0x080013f8        0x0
- .v4_bx         0x080013f8        0x0 linker stubs
+.v4_bx          0x0800148c        0x0
+ .v4_bx         0x0800148c        0x0 linker stubs
 
-.iplt           0x080013f8        0x0
- .iplt          0x080013f8        0x0 ./system/src/stm32f0-stdperiph/stm32f0xx_gpio.o
+.iplt           0x0800148c        0x0
+ .iplt          0x0800148c        0x0 ./system/src/stm32f0-stdperiph/stm32f0xx_gpio.o
 
-.rel.dyn        0x080013f8        0x0
- .rel.iplt      0x080013f8        0x0 ./system/src/stm32f0-stdperiph/stm32f0xx_gpio.o
+.rel.dyn        0x0800148c        0x0
+ .rel.iplt      0x0800148c        0x0 ./system/src/stm32f0-stdperiph/stm32f0xx_gpio.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x080013f8                . = ALIGN (0x4)
-                0x080013f8                __exidx_start = .
+                0x0800148c                . = ALIGN (0x4)
+                0x0800148c                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x080013f8                __exidx_end = .
-                0x080013f8                . = ALIGN (0x4)
-                0x080013f8                _etext = .
-                0x080013f8                __etext = .
+                0x0800148c                __exidx_end = .
+                0x0800148c                . = ALIGN (0x4)
+                0x0800148c                _etext = .
+                0x0800148c                __etext = .
 
-.data_CCMRAM    0x00000000        0x0 load address 0x080013f8
+.data_CCMRAM    0x00000000        0x0 load address 0x0800148c
  FILL mask 0xff
  *(.data.CCMRAM .data.CCMRAM.*)
                 0x00000000                . = ALIGN (0x4)
-                0x080013f8                _sidata = LOADADDR (.data)
+                0x0800148c                _sidata = LOADADDR (.data)
 
-.data           0x20000000       0xb4 load address 0x080013f8
+.data           0x20000000       0xb4 load address 0x0800148c
  FILL mask 0xff
                 0x20000000                _sdata = .
                 0x20000000                __data_start__ = .
@@ -2186,13 +2187,13 @@ END GROUP
                 0x200000b4                _edata = .
                 0x200000b4                __data_end__ = .
 
-.igot.plt       0x200000b4        0x0 load address 0x080014ac
+.igot.plt       0x200000b4        0x0 load address 0x08001540
  .igot.plt      0x200000b4        0x0 ./system/src/stm32f0-stdperiph/stm32f0xx_gpio.o
 
 .bss_CCMRAM     0x00000000        0x0
  *(.bss.CCMRAM .bss.CCMRAM.*)
 
-.bss            0x200000b4       0xa4
+.bss            0x200000b4      0x1a8
                 0x200000b4                __bss_start__ = .
                 0x200000b4                _sbss = .
  *(.bss_begin .bss_begin.*)
@@ -2208,37 +2209,39 @@ END GROUP
                 0x20000140        0x4 ./src/MCU/tick.o
  .bss.IsOpenFlag
                 0x20000144        0x4 ./src/MCU/usart2.o
+ .bss.queue     0x20000148      0x102 ./src/MCU/usart2.o
+ *fill*         0x2000024a        0x2 
  .bss.__malloc_sbrk_start
-                0x20000148        0x4 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-mallocr.o)
-                0x20000148                __malloc_sbrk_start
+                0x2000024c        0x4 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-mallocr.o)
+                0x2000024c                __malloc_sbrk_start
  .bss.__malloc_free_list
-                0x2000014c        0x4 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-mallocr.o)
-                0x2000014c                __malloc_free_list
+                0x20000250        0x4 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-mallocr.o)
+                0x20000250                __malloc_free_list
  *(COMMON)
- COMMON         0x20000150        0x4 ./system/src/newlib/_syscalls.o
-                0x20000150                errno
+ COMMON         0x20000254        0x4 ./system/src/newlib/_syscalls.o
+                0x20000254                errno
  *(.bss_end .bss_end.*)
- .bss_end       0x20000154        0x4 ./system/src/newlib/_startup.o
-                0x20000158                . = ALIGN (0x4)
-                0x20000158                __bss_end__ = .
-                0x20000158                _ebss = .
+ .bss_end       0x20000258        0x4 ./system/src/newlib/_startup.o
+                0x2000025c                . = ALIGN (0x4)
+                0x2000025c                __bss_end__ = .
+                0x2000025c                _ebss = .
 
 .noinit_CCMRAM
  *(.noinit.CCMRAM .noinit.CCMRAM.*)
 
-.noinit         0x20000158        0x0
-                0x20000158                _noinit = .
+.noinit         0x2000025c        0x0
+                0x2000025c                _noinit = .
  *(.noinit .noinit.*)
-                0x20000158                . = ALIGN (0x4)
-                0x20000158                _end_noinit = .
+                0x2000025c                . = ALIGN (0x4)
+                0x2000025c                _end_noinit = .
                 [!provide]                PROVIDE (end, _end_noinit)
                 [!provide]                PROVIDE (_end, _end_noinit)
                 [!provide]                PROVIDE (__end, _end_noinit)
                 [!provide]                PROVIDE (__end__, _end_noinit)
 
-._check_stack   0x20000158      0x100
-                0x20000258                . = (. + _Minimum_Stack_Size)
- *fill*         0x20000158      0x100 
+._check_stack   0x2000025c      0x100
+                0x2000035c                . = (. + _Minimum_Stack_Size)
+ *fill*         0x2000025c      0x100 
 
 .b1text
  *(.b1text)
@@ -2377,7 +2380,7 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x320
+.debug_aranges  0x00000000      0x328
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x28 ./system/src/newlib/_exit.o
@@ -2404,16 +2407,16 @@ END GROUP
  .debug_aranges
                 0x00000228       0x40 ./src/MCU/tick.o
  .debug_aranges
-                0x00000268       0x68 ./src/MCU/usart2.o
+                0x00000268       0x70 ./src/MCU/usart2.o
  .debug_aranges
-                0x000002d0       0x30 ./src/LIST/fifo.o
+                0x000002d8       0x30 ./src/LIST/fifo.o
  .debug_aranges
-                0x00000300       0x20 ./src/main.o
+                0x00000308       0x20 ./src/main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x2956
+.debug_info     0x00000000     0x2cbe
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000       0xef ./system/src/newlib/_exit.o
  .debug_info    0x000000ef      0x11f ./system/src/newlib/_sbrk.o
@@ -2427,11 +2430,11 @@ END GROUP
  .debug_info    0x000014e1       0xd1 ./system/src/cmsis/vectors_stm32f0xx.o
  .debug_info    0x000015b2      0x2a7 ./src/MCU/led.o
  .debug_info    0x00001859      0x4eb ./src/MCU/tick.o
- .debug_info    0x00001d44      0x640 ./src/MCU/usart2.o
- .debug_info    0x00002384      0x243 ./src/LIST/fifo.o
- .debug_info    0x000025c7      0x38f ./src/main.o
+ .debug_info    0x00001d44      0xad1 ./src/MCU/usart2.o
+ .debug_info    0x00002815      0x246 ./src/LIST/fifo.o
+ .debug_info    0x00002a5b      0x263 ./src/main.o
 
-.debug_abbrev   0x00000000     0x116d
+.debug_abbrev   0x00000000     0x12af
  *(.debug_abbrev)
  .debug_abbrev  0x00000000       0x8e ./system/src/newlib/_exit.o
  .debug_abbrev  0x0000008e       0xb9 ./system/src/newlib/_sbrk.o
@@ -2445,11 +2448,11 @@ END GROUP
  .debug_abbrev  0x000009d9       0x9d ./system/src/cmsis/vectors_stm32f0xx.o
  .debug_abbrev  0x00000a76       0xd3 ./src/MCU/led.o
  .debug_abbrev  0x00000b49      0x237 ./src/MCU/tick.o
- .debug_abbrev  0x00000d80      0x1d3 ./src/MCU/usart2.o
- .debug_abbrev  0x00000f53      0x101 ./src/LIST/fifo.o
- .debug_abbrev  0x00001054      0x119 ./src/main.o
+ .debug_abbrev  0x00000d80      0x30d ./src/MCU/usart2.o
+ .debug_abbrev  0x0000108d      0x11d ./src/LIST/fifo.o
+ .debug_abbrev  0x000011aa      0x105 ./src/main.o
 
-.debug_line     0x00000000     0x41a2
+.debug_line     0x00000000     0x41d6
  *(.debug_line)
  .debug_line    0x00000000      0x2df ./system/src/newlib/_exit.o
  .debug_line    0x000002df      0x290 ./system/src/newlib/_sbrk.o
@@ -2463,11 +2466,11 @@ END GROUP
  .debug_line    0x0000227e       0xf2 ./system/src/cmsis/vectors_stm32f0xx.o
  .debug_line    0x00002370      0x5ab ./src/MCU/led.o
  .debug_line    0x0000291b      0x5df ./src/MCU/tick.o
- .debug_line    0x00002efa      0x6ab ./src/MCU/usart2.o
- .debug_line    0x000035a5      0x5ef ./src/LIST/fifo.o
- .debug_line    0x00003b94      0x60e ./src/main.o
+ .debug_line    0x00002efa      0x730 ./src/MCU/usart2.o
+ .debug_line    0x0000362a      0x5ef ./src/LIST/fifo.o
+ .debug_line    0x00003c19      0x5bd ./src/main.o
 
-.debug_frame    0x00000000      0x82c
+.debug_frame    0x00000000      0x844
  *(.debug_frame)
  .debug_frame   0x00000000       0x38 ./system/src/newlib/_exit.o
  .debug_frame   0x00000038       0x28 ./system/src/newlib/_sbrk.o
@@ -2481,24 +2484,24 @@ END GROUP
  .debug_frame   0x0000034c       0x20 ./system/src/cmsis/vectors_stm32f0xx.o
  .debug_frame   0x0000036c       0x60 ./src/MCU/led.o
  .debug_frame   0x000003cc       0x70 ./src/MCU/tick.o
- .debug_frame   0x0000043c       0xec ./src/MCU/usart2.o
- .debug_frame   0x00000528       0x48 ./src/LIST/fifo.o
- .debug_frame   0x00000570       0x28 ./src/main.o
- .debug_frame   0x00000598       0x20 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/armv6-m/libgcc.a(_udivsi3.o)
- .debug_frame   0x000005b8       0x20 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-errno.o)
- .debug_frame   0x000005d8       0x48 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-vsnprintf.o)
- .debug_frame   0x00000620       0x74 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-svfprintf.o)
- .debug_frame   0x00000694       0x54 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-vfprintf_i.o)
- .debug_frame   0x000006e8       0x20 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memchr-stub.o)
- .debug_frame   0x00000708       0x28 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memcpy-stub.o)
- .debug_frame   0x00000730       0x28 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memmove.o)
- .debug_frame   0x00000758       0x2c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-freer.o)
- .debug_frame   0x00000784       0x2c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-mallocr.o)
- .debug_frame   0x000007b0       0x30 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-reallocr.o)
- .debug_frame   0x000007e0       0x2c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-sbrkr.o)
- .debug_frame   0x0000080c       0x20 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-msizer.o)
+ .debug_frame   0x0000043c      0x104 ./src/MCU/usart2.o
+ .debug_frame   0x00000540       0x48 ./src/LIST/fifo.o
+ .debug_frame   0x00000588       0x28 ./src/main.o
+ .debug_frame   0x000005b0       0x20 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/armv6-m/libgcc.a(_udivsi3.o)
+ .debug_frame   0x000005d0       0x20 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-errno.o)
+ .debug_frame   0x000005f0       0x48 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-vsnprintf.o)
+ .debug_frame   0x00000638       0x74 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_frame   0x000006ac       0x54 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_frame   0x00000700       0x20 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memchr-stub.o)
+ .debug_frame   0x00000720       0x28 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memcpy-stub.o)
+ .debug_frame   0x00000748       0x28 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-memmove.o)
+ .debug_frame   0x00000770       0x2c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-freer.o)
+ .debug_frame   0x0000079c       0x2c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x000007c8       0x30 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_frame   0x000007f8       0x2c /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-sbrkr.o)
+ .debug_frame   0x00000824       0x20 /usr/local/gcc-arm-none-eabi-5_3-2016q1/bin/../lib/gcc/arm-none-eabi/5.3.1/../../../../arm-none-eabi/lib/armv6-m/libg_nano.a(lib_a-nano-msizer.o)
 
-.debug_str      0x00000000    0x46063
+.debug_str      0x00000000    0x46093
  *(.debug_str)
  .debug_str     0x00000000     0x683d ./system/src/newlib/_exit.o
                                0x69af (size before relaxing)
@@ -2520,18 +2523,18 @@ END GROUP
                               0x3f3e1 (size before relaxing)
  .debug_str     0x0004597c       0x56 ./system/src/cmsis/vectors_stm32f0xx.o
                                0x2f13 (size before relaxing)
- .debug_str     0x000459d2      0x145 ./src/MCU/led.o
-                              0x430c4 (size before relaxing)
- .debug_str     0x00045b17      0x2e3 ./src/MCU/tick.o
-                              0x43317 (size before relaxing)
- .debug_str     0x00045dfa      0x187 ./src/MCU/usart2.o
-                              0x4324a (size before relaxing)
- .debug_str     0x00045f81       0xad ./src/LIST/fifo.o
-                              0x43092 (size before relaxing)
- .debug_str     0x0004602e       0x35 ./src/main.o
-                              0x4319b (size before relaxing)
+ .debug_str     0x000459d2      0x15f ./src/MCU/led.o
+                              0x430de (size before relaxing)
+ .debug_str     0x00045b31      0x2e3 ./src/MCU/tick.o
+                              0x43331 (size before relaxing)
+ .debug_str     0x00045e14      0x242 ./src/MCU/usart2.o
+                              0x4350b (size before relaxing)
+ .debug_str     0x00046056       0x21 ./src/LIST/fifo.o
+                              0x430a1 (size before relaxing)
+ .debug_str     0x00046077       0x1c ./src/main.o
+                              0x43118 (size before relaxing)
 
-.debug_loc      0x00000000      0xba9
+.debug_loc      0x00000000      0xbcc
  *(.debug_loc)
  .debug_loc     0x00000000       0x7b ./system/src/newlib/_sbrk.o
  .debug_loc     0x0000007b      0x265 ./system/src/newlib/_startup.o
@@ -2541,9 +2544,8 @@ END GROUP
  .debug_loc     0x000005c1       0x94 ./system/src/cortexm/exception_handlers.o
  .debug_loc     0x00000655       0xee ./system/src/cmsis/system_stm32f0xx.o
  .debug_loc     0x00000743      0x13a ./src/MCU/tick.o
- .debug_loc     0x0000087d      0x1de ./src/MCU/usart2.o
- .debug_loc     0x00000a5b      0x130 ./src/LIST/fifo.o
- .debug_loc     0x00000b8b       0x1e ./src/main.o
+ .debug_loc     0x0000087d      0x21f ./src/MCU/usart2.o
+ .debug_loc     0x00000a9c      0x130 ./src/LIST/fifo.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -2561,7 +2563,7 @@ END GROUP
  *(.debug_varnames)
 OUTPUT(usart.elf elf32-littlearm)
 
-.debug_ranges   0x00000000      0x278
+.debug_ranges   0x00000000      0x280
  .debug_ranges  0x00000000       0x18 ./system/src/newlib/_exit.o
  .debug_ranges  0x00000018       0x10 ./system/src/newlib/_sbrk.o
  .debug_ranges  0x00000028       0x48 ./system/src/newlib/_startup.o
@@ -2574,11 +2576,11 @@ OUTPUT(usart.elf elf32-littlearm)
  .debug_ranges  0x00000170       0x10 ./system/src/cmsis/vectors_stm32f0xx.o
  .debug_ranges  0x00000180       0x28 ./src/MCU/led.o
  .debug_ranges  0x000001a8       0x30 ./src/MCU/tick.o
- .debug_ranges  0x000001d8       0x58 ./src/MCU/usart2.o
- .debug_ranges  0x00000230       0x38 ./src/LIST/fifo.o
- .debug_ranges  0x00000268       0x10 ./src/main.o
+ .debug_ranges  0x000001d8       0x60 ./src/MCU/usart2.o
+ .debug_ranges  0x00000238       0x38 ./src/LIST/fifo.o
+ .debug_ranges  0x00000270       0x10 ./src/main.o
 
-.debug_macro    0x00000000     0x33a5
+.debug_macro    0x00000000     0x339d
  .debug_macro   0x00000000      0x182 ./system/src/newlib/_exit.o
  .debug_macro   0x00000182       0x9c ./system/src/newlib/_exit.o
  .debug_macro   0x0000021e      0x10e ./system/src/newlib/_exit.o
@@ -2625,10 +2627,9 @@ OUTPUT(usart.elf elf32-littlearm)
  .debug_macro   0x00002293      0x15b ./system/src/cmsis/system_stm32f0xx.o
  .debug_macro   0x000023ee       0x34 ./system/src/cmsis/vectors_stm32f0xx.o
  .debug_macro   0x00002422      0x2fb ./src/MCU/led.o
- .debug_macro   0x0000271d       0x2e ./src/MCU/led.o
- .debug_macro   0x0000274b      0x2fb ./src/MCU/tick.o
- .debug_macro   0x00002a46      0x30f ./src/MCU/usart2.o
- .debug_macro   0x00002d55      0x2fd ./src/LIST/fifo.o
- .debug_macro   0x00003052       0x10 ./src/LIST/fifo.o
- .debug_macro   0x00003062       0x10 ./src/LIST/fifo.o
- .debug_macro   0x00003072      0x333 ./src/main.o
+ .debug_macro   0x0000271d       0x34 ./src/MCU/led.o
+ .debug_macro   0x00002751      0x2fb ./src/MCU/tick.o
+ .debug_macro   0x00002a4c      0x326 ./src/MCU/usart2.o
+ .debug_macro   0x00002d72       0x10 ./src/MCU/usart2.o
+ .debug_macro   0x00002d82      0x2fe ./src/LIST/fifo.o
+ .debug_macro   0x00003080      0x31d ./src/main.o

@@ -7,11 +7,12 @@ S\+T\+M32 serial2 M\+C\+U hardware interface layer. to maintain code portability
 
 
 {\ttfamily \#include \char`\"{}M\+C\+U/usart2.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}L\+I\+S\+T/fifo.\+h\char`\"{}}\\*
 Include dependency graph for usart2.\+c\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=281pt]{usart2_8c__incl}
+\includegraphics[width=349pt]{usart2_8c__incl}
 \end{center}
 \end{figure}
 \subsection*{Macros}
@@ -23,6 +24,14 @@ Include dependency graph for usart2.\+c\+:\nopagebreak
 \hypertarget{usart2_8c_af91c2a8b8c966e16328c4384d1a31b23}{\#define \hyperlink{usart2_8c_af91c2a8b8c966e16328c4384d1a31b23}{G\+P\+I\+O\+\_\+\+A\+F\+R\+L\+\_\+\+A\+F\+R3\+\_\+0}~(uint32\+\_\+t) 0x00001000}\label{usart2_8c_af91c2a8b8c966e16328c4384d1a31b23}
 
 \begin{DoxyCompactList}\small\item\em Alternative function set bit 1 for A\+F\+R3. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int\+\_\+fast8\+\_\+t \hyperlink{usart2_8c_a00d2bbd0e69810d128bc790d1abc2315}{Does\+Receive\+Buffer\+Have\+Data} (void)
+\begin{DoxyCompactList}\small\item\em return the serial receive byte buffer state \end{DoxyCompactList}\item 
+\hypertarget{usart2_8c_a0ca6fd0e6f77921dd1123539857ba0a8}{void \hyperlink{usart2_8c_a0ca6fd0e6f77921dd1123539857ba0a8}{U\+S\+A\+R\+T2\+\_\+\+I\+R\+Q\+Handler} (void)}\label{usart2_8c_a0ca6fd0e6f77921dd1123539857ba0a8}
+
+\begin{DoxyCompactList}\small\item\em Interrupt handler for the U\+S\+A\+R\+T2. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -38,6 +47,23 @@ S\+T\+M32 serial2 M\+C\+U hardware interface layer. to maintain code portability
 \end{DoxyAuthor}
 
 
+\subsection{Function Documentation}
+\hypertarget{usart2_8c_a00d2bbd0e69810d128bc790d1abc2315}{\index{usart2.\+c@{usart2.\+c}!Does\+Receive\+Buffer\+Have\+Data@{Does\+Receive\+Buffer\+Have\+Data}}
+\index{Does\+Receive\+Buffer\+Have\+Data@{Does\+Receive\+Buffer\+Have\+Data}!usart2.\+c@{usart2.\+c}}
+\subsubsection[{Does\+Receive\+Buffer\+Have\+Data}]{\setlength{\rightskip}{0pt plus 5cm}int\+\_\+fast8\+\_\+t Does\+Receive\+Buffer\+Have\+Data (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{usart2_8c_a00d2bbd0e69810d128bc790d1abc2315}
+
+
+return the serial receive byte buffer state 
+
+\begin{DoxyReturn}{Returns}
+T\+R\+U\+E = we have data F\+A\+L\+S\+E = no data to read E\+R\+R\+O\+R = Port is not open 
+\end{DoxyReturn}
+
+
 \subsection{Variable Documentation}
 \hypertarget{usart2_8c_a0ad9cd4fbffc7497abd537641dcc99af}{\index{usart2.\+c@{usart2.\+c}!Serial\+Port2@{Serial\+Port2}}
 \index{Serial\+Port2@{Serial\+Port2}!usart2.\+c@{usart2.\+c}}
@@ -51,7 +77,7 @@ S\+T\+M32 serial2 M\+C\+U hardware interface layer. to maintain code portability
                                     SendByte,
                                     SendString,
                                     SendArray,
-                                    DoesReceiveBufferHaveData,
+                                    \hyperlink{usart2_8c_a00d2bbd0e69810d128bc790d1abc2315}{DoesReceiveBufferHaveData},
                                     GetByte
                                 \}
 \end{DoxyCode}

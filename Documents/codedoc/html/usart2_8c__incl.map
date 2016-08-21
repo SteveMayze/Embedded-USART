@@ -1,5 +1,7 @@
 <map id="/home/vagrant/Workspaces/Embedded/USART/usart/src/MCU/usart2.c" name="/home/vagrant/Workspaces/Embedded/USART/usart/src/MCU/usart2.c">
-<area shape="rect" id="node2" href="$usart2_8h.html" title="MCU/usart2.h" alt="" coords="71,109,175,136"/>
-<area shape="rect" id="node3" href="$common_8h.html" title="Holds all common code definitions. " alt="" coords="81,259,163,285"/>
-<area shape="rect" id="node7" href="$_serial_structure_8h.html" title="define the serial interface layer structure " alt="" coords="103,184,256,211"/>
+<area shape="rect" id="node2" href="$usart2_8h.html" title="MCU/usart2.h" alt="" coords="47,109,151,136"/>
+<area shape="rect" id="node8" href="$fifo_8h.html" title="FIFO Library. " alt="" coords="175,109,256,136"/>
+<area shape="rect" id="node3" href="$common_8h.html" title="Holds all common code definitions. " alt="" coords="116,259,197,285"/>
+<area shape="rect" id="node7" href="$_serial_structure_8h.html" title="define the serial interface layer structure " alt="" coords="23,184,176,211"/>
+<area shape="rect" id="node9" href="$_fi_fo_structure_8h.html" title="FIFO Library API structure. " alt="" coords="252,184,363,211"/>
 </map>

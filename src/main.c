@@ -10,7 +10,7 @@
 #include "MCU/tick.h"
 
 
-#define TEST_BLOCK_4
+#define TEST_BLOCK_5
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -41,8 +41,6 @@ void main(void)
     }
 }
 #endif
-
-
 
 #ifdef TEST_BLOCK_2
 #include "LIST/fifo.h"
@@ -132,5 +130,28 @@ void main(void)
         }
     }
 }
+#endif
 
+
+#ifdef TEST_BLOCK_5
+void main(void)
+{
+    uint8_t tempData;
+
+    Led_Init();
+    Tick_init();
+
+    SerialPort2.Open(9600);
+
+    for ( ;; )
+    {
+        while ( TRUE == SerialPort2.GetByte(&tempData))
+        {
+			SerialPort2.SendByte(tempData);
+        }
+        // Some code to run
+        Tick_DelayMs(500);
+		Led_Toggle(); // Toggle each byte
+    }
+}
 #endif
