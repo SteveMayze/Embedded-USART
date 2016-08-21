@@ -1,9 +1,9 @@
 //////////////////////////////////////////////////////////////////////////////
-///	\file FifoStructure.h
+///	\file FiFoStructure.h
 ///
 ///	\brief	FIFO Library API structure
 ///
-///	\Author	Steve Mayze
+///	\author	Steve Mayze
 ///
 //////////////////////////////////////////////////////////////////////////////
 
@@ -12,25 +12,24 @@
 
 	#include "../common.h"
 
-//////////////////////////////////////////////////////////////////////////////
-// \brief defines the FIFO buffer maximum size
-//////////////////////////////////////////////////////////////////////////////
+
 #ifdef _FIFO_TEST_
-#define MAXQUEUESIZE 3
+#define MAXQUEUESIZE 3	///< defines the FIFO buffer maximum size
 #else
-#define MAXQUEUESIZE 100
+#define MAXQUEUESIZE 100	///< defines the FIFO buffer maximum size
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
-// \brief The structure for the FIFO queue as an array of uint8_t
+/// \brief The structure for the FIFO queue as an array of uint8_t
 //////////////////////////////////////////////////////////////////////////////
 	typedef struct {
 
-		/// \brief The FIFO buffer of uint8_t
-		uint8_t items[MAXQUEUESIZE];
 
-		/// \brief The front and rear track the insert and remove point
-		int front, rear;
+		uint8_t items[MAXQUEUESIZE];	///<	The FIFO buffer of uint8_t
+
+		uint8_t front;	///<	The front or read/remove point of the queue
+
+		uint8_t rear;	///<	The rear or insert point of the queue
 
 	} FIFOQueue;
 
@@ -40,11 +39,11 @@
 	//////////////////////////////////////////////////////////////////////////
 	typedef struct {
 
-		uint_fast8_t (*Initialize)( FIFOQueue *queue );
+		uint_fast8_t (*Initialize)( FIFOQueue *queue );	///<	\brief Initialize the queue
 
-		uint_fast8_t (*Insert)(FIFOQueue *queue, const uint8_t byte);
+		uint_fast8_t (*Insert)(FIFOQueue *queue, const uint8_t byte);	///<	\brief	Insert an item at the end of the queue
 
-		uint_fast8_t (*Remove)(FIFOQueue *queue, uint8_t *dest);
+		uint_fast8_t (*Remove)(FIFOQueue *queue, uint8_t *dest);	///<	\brief Remove an item from the front of the queue
 
 
 	} FIFOInterface;

@@ -1,0 +1,5 @@
+<map id="/home/vagrant/Workspaces/Embedded/USART/usart/include/MCU/SerialStructure.h" name="/home/vagrant/Workspaces/Embedded/USART/usart/include/MCU/SerialStructure.h">
+<area shape="rect" id="node2" href="$usart2_8h.html" title="/home/vagrant/Workspaces\l/Embedded/USART/usart/include\l/MCU/usart2.h" alt="" coords="133,109,349,165"/>
+<area shape="rect" id="node3" href="$main_8c.html" title="This is the main program code. " alt="" coords="5,221,240,262"/>
+<area shape="rect" id="node4" href="$usart2_8c.html" title="STM32 serial2 MCU hardware interface layer. to maintain code portability, the hardware related code i..." alt="" coords="265,213,457,269"/>
+</map>

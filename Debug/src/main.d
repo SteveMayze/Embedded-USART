@@ -28,7 +28,7 @@ src/main.o: ../src/main.c ../include/common.h \
  ../system/include/stm32f0-stdperiph/stm32f0xx_wwdg.h \
  ../system/include/stm32f0-stdperiph/stm32f0xx_misc.h \
  ../include/MCU/led.h ../include/MCU/usart2.h \
- ../include/MCU/SeriaStructure.h ../include/MCU/../common.h \
+ ../include/MCU/SerialStructure.h ../include/MCU/../common.h \
  ../include/MCU/tick.h ../include/LIST/fifo.h ../include/LIST/../common.h \
  ../include/LIST/FiFoStructure.h
 
@@ -98,7 +98,7 @@ src/main.o: ../src/main.c ../include/common.h \
 
 ../include/MCU/usart2.h:
 
-../include/MCU/SeriaStructure.h:
+../include/MCU/SerialStructure.h:
 
 ../include/MCU/../common.h:
 

@@ -3,7 +3,7 @@
 ///	\brief STM32 serial2 MCU hardware interface layer. to maintain
 ///	code portability, the hardware related code is split from the main logic.
 ///
-///	Author: Ronald Sousa (Opticalworm)
+///	\author: Ronald Sousa (Opticalworm)
 /////////////////////////////////////////////////////////////////////////
 #include "MCU/usart2.h"
 
@@ -291,7 +291,7 @@ static uint_fast8_t SendArray(const uint8_t *source, uint32_t length)
 ///////////////////////////////////////////////////////////////////////////////
 /// \brief Defines the standard serial functions for usart 2
 ///
-/// /sa SerialInterface
+/// \sa SerialInterface
 ///////////////////////////////////////////////////////////////////////////////
 SerialInterface SerialPort2 = {
                                     IsSerialOpen,

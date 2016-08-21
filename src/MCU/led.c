@@ -2,7 +2,7 @@
 ///	\file led.c
 ///	\brief this is the LED hardware interface layer.
 ///
-///	Author: Ronald Sousa (@Opticalworm)
+///	\author: Ronald Sousa (@Opticalworm)
 /////////////////////////////////////////////////////////////////////////
 #include "MCU/led.h"
 

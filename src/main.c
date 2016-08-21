@@ -2,7 +2,7 @@
 ///	\file main.c
 ///	\brief This is the main program code.
 ///
-///	Author: Ronald Sousa (Opticalworm)
+///	\author: Ronald Sousa (Opticalworm)
 /////////////////////////////////////////////////////////////////////////
 #include "common.h"
 #include "MCU/led.h"

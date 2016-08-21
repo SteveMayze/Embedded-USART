@@ -2,7 +2,7 @@
 /// \file	common.h
 ///	\brief Holds all common code definitions
 ///
-///	Author: Ronald Sousa (@Opticalworm)
+///	\author: Ronald Sousa (@Opticalworm)
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef __COMMON_H__
 #define __COMMON_H__
